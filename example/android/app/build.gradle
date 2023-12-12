@@ -21,6 +21,12 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
+android {
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
+}
 
 android {
     namespace "com.avilatek.flutter_newpos_sdk_example"
@@ -31,9 +37,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+   
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 
     sourceSets {
@@ -45,7 +55,7 @@ android {
         applicationId "com.avilatek.flutter_newpos_sdk_example"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -65,7 +75,8 @@ flutter {
 }
 
 dependencies {
-    implementation files('/Users/andrespacheco/Development/AvilaTek/armirene/test/flutter_newpos_sdk/example/android/app/src/main/libs/mposlib-release.aar')
+    implementation files('/Users/lesanpi/avila-tek/flutter_newpos_sdk_plugin/example/android/app/src/main/libs/mposlib-release.aar')
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 
