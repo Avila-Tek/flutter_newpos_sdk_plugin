@@ -1,8 +1,14 @@
+library flutter_newpos_sdk;
 
-import 'flutter_newpos_sdk_platform_interface.dart';
+import 'dart:async';
+import 'dart:io';
 
-class FlutterNewposSdk {
-  Future<String?> getPlatformVersion() {
-    return FlutterNewposSdkPlatform.instance.getPlatformVersion();
-  }
-}
+import 'package:flutter/services.dart';
+
+part 'src/helper.dart';
+part 'src/flutter_newpos_sdk.dart';
+part 'src/models/bluetooth_device.dart';
+part 'src/models/device_scanned.dart';
+part 'src/models/read_card_info.dart';
+part 'src/models/device_info.dart';
+part 'src/exceptions/flutter_pos_exceptions.dart';
