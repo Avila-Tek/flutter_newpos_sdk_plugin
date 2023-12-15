@@ -1,6 +1,8 @@
 # flutter_newpos_sdk
 
-A new Flutter plugin project.
+<img alt="NEWPOS N98 unit" src="https://imgur.com/6HkNhh2"></img>
+
+A Flutter plugin that adds support for the NEWPOS N98 mPOS unit. Only available for Android.
 
 ## Getting Started
 
