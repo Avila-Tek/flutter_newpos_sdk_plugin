@@ -1,3 +1,9 @@
-## 0.0.1
+## 0.0.1-alpha
 
-* TODO: Describe initial release.
+* Start of Flutter newPOS SDK plugin!
+* Integration of core SDK functionalities, including:
+  * Scanning Bluetooth devices
+  * Connect to N98 device
+  * Send data to and read from POS
+  * Read card data
+* WIP: Set order amount in POS and PIN for required cards.
