@@ -27,6 +27,7 @@ class NewposSdkDelegate: INpSwipeListener {
 
     override fun onDeviceConnected() {
         Log.d("onDeviceConnected","🛜✅ The POS has been connected!")
+
     }
 
     override fun onGetDeviceInfo(info: DeviceInfoEntity?) {
@@ -40,6 +41,7 @@ class NewposSdkDelegate: INpSwipeListener {
         Log.d("onGetDeviceInfo","KSN -> $ksn")
         Log.d("onGetDeviceInfo","CURRENT ELE PER -> $currentElePer")
         Log.d("onGetDeviceInfo","-----------------------")
+
     }
 
     override fun onGetTransportSessionKey(encryTransportKey: String?) {

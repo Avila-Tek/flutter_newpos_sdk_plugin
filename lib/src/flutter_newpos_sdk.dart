@@ -1,12 +1,17 @@
 part of flutter_newpos_sdk;
-// import 'dart:async';
 
-// import 'package:flutter/services.dart';
-
-// import 'exceptions/flutter_pos_exceptions.dart';
-// import 'models/models.dart';
-
+/// {@template flutter_pos_sdk}
+/// The main class of this plugin. This class has all the available functions
+/// of the N98 device.
+/// {@endtemplate}
 class FlutterNewposSdk {
+  /// {@macro flutter_pos_sdk}
+  FlutterNewposSdk._();
+
+  static final FlutterNewposSdk _instance = FlutterNewposSdk._();
+
+  static FlutterNewposSdk get instance => _instance;
+
   /// Default time out
   static const _defaultTimeOut = Duration(seconds: 10);
 
@@ -166,7 +171,7 @@ class FlutterNewposSdk {
     }
   }
 
-  /// Adds an RID to the FlutterPos plugin.
+  /// Adds an RID to the newPOS device.
   ///
   /// This function returns a `Future<void>`, which completes when the RID has been added successfully or when an error occurs.
   ///
@@ -228,7 +233,7 @@ class FlutterNewposSdk {
     }
   }
 
-  /// Displays text on the POS screen for a specified period of time.
+  /// Displays text on the newPOS screen for a specified period of time.
   ///
   /// The function uses a stream to verify if the text was displayed correctly.
   ///
@@ -301,7 +306,7 @@ class FlutterNewposSdk {
     }
   }
 
-  /// Updates the master key for the FlutterPos plugin.
+  /// Updates the master key of the newPOS.
   ///
   /// The master key is used to encrypt and decrypt data, so it is important to keep it safe.
   ///
@@ -384,7 +389,7 @@ class FlutterNewposSdk {
     }
   }
 
-  /// Gets the device information from the FlutterPos plugin.
+  /// Returns the newPOS's device information.
   ///
   /// This function returns a `DeviceInfo` object, which contains information about the device's firmware version, device type, KSN, and current ele per.
   ///
@@ -546,7 +551,7 @@ class FlutterNewposSdk {
     }
   }
 
-  /// Stops a scan for Bluetooth Low Energy devices.
+  /// Stops the scan for Bluetooth devices.
   ///
   /// **Example:**
   ///
@@ -595,7 +600,11 @@ class FlutterNewposSdk {
     }
   }
 
-  /// Connects the POS device to a Bluetooth device with the specified MAC address.
+  /// Connects to a Bluetooth device, if in range, with the specified MAC address.
+  ///
+  /// **NOTE:** This function
+  /// must be used to connect to the newPOS device, else the other functions will
+  /// not work.
   ///
   /// The function uses a stream to verify if the connection was successful.
   ///
@@ -862,6 +871,7 @@ class FlutterNewposSdk {
   }
 
   static Future<dynamic> _methodCallHandler(MethodCall call) async {
+    // ignore: unused_local_variable
     final arguments = call.arguments;
     // keep track of adapter states
     if (call.method == 'scanBluetoothDevices') {}
