@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final String _platformVersion = 'Unknown';
-  final _flutterNewposSdkPlugin = FlutterNewposSdk();
+  final _flutterNewposSdkPlugin = FlutterNewposSdk.instance;
 
   @override
   void initState() {

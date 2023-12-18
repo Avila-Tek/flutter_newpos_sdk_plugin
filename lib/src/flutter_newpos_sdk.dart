@@ -1,12 +1,17 @@
 part of flutter_newpos_sdk;
-// import 'dart:async';
 
-// import 'package:flutter/services.dart';
-
-// import 'exceptions/flutter_pos_exceptions.dart';
-// import 'models/models.dart';
-
+/// {@template flutter_pos_sdk}
+/// The main class of this plugin. This class has all the available functions
+/// of the N98 device.
+/// {@endtemplate}
 class FlutterNewposSdk {
+  /// {@macro flutter_pos_sdk}
+  FlutterNewposSdk._();
+
+  static final FlutterNewposSdk _instance = FlutterNewposSdk._();
+
+  static FlutterNewposSdk get instance => _instance;
+
   /// Default time out
   static const _defaultTimeOut = Duration(seconds: 10);
 
