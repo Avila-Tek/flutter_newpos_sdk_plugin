@@ -43,6 +43,24 @@ class ReadCardInfo {
   final String? track3;
   final String? csn;
 
+  String get tag9F34 {
+    final ic55String = ic55Data ?? '';
+    final splitted = ic55String.split('9F34');
+    if (splitted.length < 2) return '';
+    return splitted[1];
+  }
+
+  String get tagPin {
+    return tag9F34.substring(2, 4);
+  }
+
+  bool get requiresPin {
+    final pinInfo = NeedingPin.needingPinList.firstWhere(
+        (element) => element.tagRes == tagPin,
+        orElse: () => PinInfo(needPin: false, tagRes: tagPin));
+    return pinInfo.needPin;
+  }
+
   Map<String, dynamic> toJson() => {
         'track1': track1,
         'track2': track2,
