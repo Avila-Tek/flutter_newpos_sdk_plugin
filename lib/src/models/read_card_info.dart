@@ -14,6 +14,7 @@ class ReadCardInfo {
     this.expDate,
     this.track3,
     this.csn,
+    required this.requiresPin,
   });
 
   factory ReadCardInfo.fromJson(Map<String, dynamic> json) => ReadCardInfo(
@@ -29,6 +30,7 @@ class ReadCardInfo {
         expDate: json['expDate'] as String?,
         track3: json['track3'] as String?,
         csn: json['csn'] as String?,
+        requiresPin: json['requiresPin'] as bool? ?? false,
       );
   final String? track1;
   final String? track2;
@@ -42,6 +44,18 @@ class ReadCardInfo {
   final String? expDate;
   final String? track3;
   final String? csn;
+  final bool requiresPin;
+
+  String get tag9F34 {
+    final ic55String = ic55Data ?? '';
+    final splitted = ic55String.split('9F34');
+    if (splitted.length < 2) return '';
+    return splitted[1];
+  }
+
+  String get tagPin {
+    return tag9F34.substring(2, 4);
+  }
 
   Map<String, dynamic> toJson() => {
         'track1': track1,
@@ -56,6 +70,7 @@ class ReadCardInfo {
         'expDate': expDate,
         'track3': track3,
         'csn': csn,
+        'requiresPin': requiresPin,
       };
 
   String get expirationDate {

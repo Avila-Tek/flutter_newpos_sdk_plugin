@@ -251,7 +251,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                               onPressed: () async {
                                 try {
                                   LoadingDialog.show(context);
-                                  final cardInfo = await FlutterNewposSdk
+                                  final result = await FlutterNewposSdk
                                       .completeTransaction(
                                     amount: 0,
                                   );
@@ -262,7 +262,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                     ),
                                   );
                                   setState(() {
-                                    readCardInfo = cardInfo;
+                                    readCardInfo = result.card;
                                   });
                                   LoadingDialog.hide(context);
                                 } catch (e) {

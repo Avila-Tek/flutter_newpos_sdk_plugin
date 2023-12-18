@@ -2,21 +2,60 @@ package com.avilatek.flutter_newpos_sdk
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
+import android.content.res.AssetManager
 import android.os.Handler
 import android.os.Looper
+import com.newpos.mposlib.sdk.NpPosManager
 import com.newpos.mposlib.sdk.CardInfoEntity
 import com.newpos.mposlib.sdk.DeviceInfoEntity
 import com.newpos.mposlib.sdk.INpSwipeListener
-import io.flutter.plugin.common.MethodChannel
+import com.newpos.mposlib.sdk.InputInfoEntity
 import io.flutter.Log
+import io.flutter.plugin.common.MethodChannel
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.xml.sax.SAXException
+import java.io.IOException
+import java.io.InputStream
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.parsers.ParserConfigurationException
 
 /// newPOS SDK Delegate. Declares the behavior and functionality to be executed when instantiating
 /// the [NpPosManager] class.
-class FlutterPosDelegate(private val channel: MethodChannel) : INpSwipeListener {
+class FlutterPosDelegate(private val channel: MethodChannel, private val posManager: NpPosManager, private val needingPin: InputStream,) : INpSwipeListener {
 
 
-    // NOTA para LUIS: Estos son los callbacks del POS. Sobrescribe los que necesites para que
-    // retornen de vuelta a Flutter la data que necesites.
+    fun needsPin(code: String, file: InputStream): Boolean {
+        try {
+            val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+            val documentBuilder = documentBuilderFactory.newDocumentBuilder()
+            val document = documentBuilder.parse(file)
+            document.documentElement.normalize()
+    
+            val rowNodes = document.getElementsByTagName("ROW")
+    
+            for (index in 0 until rowNodes.length) {
+                val rowNode = rowNodes.item(index)
+    
+                if (rowNode.nodeType == Node.ELEMENT_NODE) {
+                    val rowElement = rowNode as Element
+    
+                    if (code == rowElement.getElementsByTagName("tag_res").item(0).textContent) {
+                        return rowElement.getElementsByTagName("need_pin").item(0).textContent == "Y"
+                    }
+                }
+            }
+    
+            return false
+        } catch (e: ParserConfigurationException) {
+            throw e
+        } catch (e: IOException) {
+            throw e
+        } catch (e: SAXException) {
+            throw e
+        }
+    }
+
     override fun onDeviceDisConnected() {
         Log.d("onDeviceDisConnected","🛜❌ The POS has been disconnected!")
         Handler(Looper.getMainLooper()).post {
@@ -189,6 +228,28 @@ class FlutterPosDelegate(private val channel: MethodChannel) : INpSwipeListener 
         data["track3"] = track3
         data["tusn"] = tusn
         Handler(Looper.getMainLooper()).post {
+
+            /// Get requiresPin field
+            val track2 = cardInfoEntity!!.track2
+            val exp = cardInfoEntity!!.expDate
+            val tag9F34 = cardInfoEntity!!.ic55Data.split("9F34").toTypedArray()[1]
+            val requiresPin: Boolean = needsPin(tag9F34.substring(2, 4), needingPin)
+            data["requiresPin"] = requiresPin
+            
+
+            /// Requires pin flow
+            if (requiresPin) {
+                val codeInputEntity = InputInfoEntity()
+                codeInputEntity.setInputType(1);
+                codeInputEntity.setTimeout(30);
+                codeInputEntity.setTitle("Inserte PIN");
+                codeInputEntity.setPan(cardInfoEntity.cardNumber)
+                posManager.getInputInfoFromKB(codeInputEntity);
+
+            } else {
+                // datosIso = TDD_TDC_Data.DatosIso(data_for_iso, dbDatosIso);
+            }
+
             channel.invokeMethod("OnGetReadCardInfo", data)
         }
 
@@ -196,6 +257,9 @@ class FlutterPosDelegate(private val channel: MethodChannel) : INpSwipeListener 
 
     override fun onGetReadInputInfo(inputInfo: String?) {
         Log.d("onGetReadInputInfo","INPUT INFO -> $inputInfo")
+        Handler(Looper.getMainLooper()).post {
+            channel.invokeMethod("OnGetReadInputInfo", inputInfo)
+        }
     }
 
     override fun onGetICCardWriteback(result: Boolean) {
