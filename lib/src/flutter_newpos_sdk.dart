@@ -681,11 +681,65 @@ class FlutterNewposSdk {
     }
   }
 
-  static Future<ReadCardInfo> completeTransaction({
+  /// Completes a transaction for the specified amount and returns the result.
+
+  ///
+
+  /// **Input:**
+
+  /// * **`amount`:** The amount required for the transaction (e.g., 10.50). Please note that the amount parameter needs to be an integer, meaning whole numbers and cents without decimal points. You can convert decimal values by multiplying them by 100 and rounding them down (e.g., $10.50 becomes 1050).
+
+  ///
+
+  /// **Output:**
+
+  /// * **`CompleteTransactionResult`:** An object that contains the card information and PIN, if necessary.
+
+  ///
+
+  /// **Usage:**
+
+  /// ```dart
+  /// // Completes a transaction for $10.25.
+  /// final amount = 10.25;
+  /// final amountAsDouble = double.parse(amount.toStringAsFixed(2));
+  /// final amountAsInt = (amountAsDouble * 100).toInt();
+
+  /// final result = await FlutterNewposSdk.completeTransaction(amount: amountAsInt);
+  /// ```
+
+  ///
+
+  /// **Example 1:** No PIN required
+
+  /// In this example, the card does not require a PIN. The function simply returns a `CompleteTransactionResult` with the card information.
+
+  /// ```dart
+  /// // Completes a transaction for $10.00 with a card that does not require PIN.
+  /// final result = await FlutterNewposSdk.completeTransaction(amount: 1000);
+  ///
+  /// // The card does not require a PIN.
+  /// final card = result.card;
+  ///
+  /// // Prints the card information.
+  /// print(card.cardNumber); // 1234-5678-9012-3456
+  /// print(card.cardholderName); // John Doe
+  /// ```
+  static Future<CompleteTransactionResult> completeTransaction({
     required double amount,
   }) async {
+    // Try block to handle potential errors during the transaction process.
+
     try {
-      /// Stream method
+      // **Input:**
+
+      // We only require the `amount` as input for the transaction initiation.
+
+      // **Card Information:**
+
+      // 1. Use `FlutterNewposSdk._methodStream.stream` to listen for the "OnGetReadCardInfo" event.
+      // 2. Filter the stream to only get relevant events.
+      // 3. Map the event to a `ReadCardInfo` object using conversion logic.
       final stream = FlutterNewposSdk._methodStream.stream
           .where((m) => m.method == 'OnGetReadCardInfo')
           .map((m) {
@@ -698,11 +752,14 @@ class FlutterNewposSdk {
         });
         return ReadCardInfo.fromJson(convertedMap);
       });
-      await _invokeMethod('completeTransaction');
+
+      // 2. Get the first `ReadCardInfo` object from the stream within 10 seconds.
+      // If no card is read within the timeout, throw an exception.
       final card = await getFirstResultInStream(
         stream,
         const Duration(seconds: 10),
       );
+
       if (card == null) {
         throw const FlutterPosException(
           code: 'COMPLETE_TRANSACTION_EXCEPTION',
@@ -710,11 +767,44 @@ class FlutterNewposSdk {
         );
       }
 
-      return card;
-    } on TimeoutException {
+      // **PIN Handling:**
+
+      // 1. Check if the read card requires a PIN based on the `ReadCardInfo.requiresPin` property.
+      final cardRequiresPin = card.requiresPin;
+
+      // Example 1: No PIN required
+
+      if (!cardRequiresPin) {
+        // Simply return the `CompleteTransactionResult` with the `card` information.
+        return CompleteTransactionResult(card: card);
+      }
+
+      // Example 2: PIN required
+
+      // 2. Use `FlutterNewposSdk._methodStream.stream` to listen for the "OnGetReadInputInfo" event.
+      // This event is triggered when the device prompts the user for input (likely the PIN).
+      // 3. Filter the stream for relevant events and map them to strings.
+      // 4. Get the first string value from the stream within 10 seconds.
+      // This assumes the user successfully enters the PIN within the timeout.
+      final pinInputStream = FlutterNewposSdk._methodStream.stream
+          .where((m) => m.method == 'OnGetReadInputInfo')
+          .map((m) => m.arguments as String? ?? '');
+
+      final pin = await getFirstResultInStream(
+        pinInputStream,
+        const Duration(seconds: 10),
+      );
+
+      // Return the `CompleteTransactionResult` with both `card` and `pin` information.
+      return CompleteTransactionResult(card: card, pin: pin);
+    } // Exceptions handling:
+    // Rethrow TimeoutExceptions to propagate them to the caller.
+    on TimeoutException {
       rethrow;
-    } catch (e) {
-      throw BluetoothConnectionFailed(code: '');
+    }
+    // Catch any other exceptions and throw a customized `BluetoothConnectionFailed` exception.
+    catch (e) {
+      throw BluetoothConnectionFailed();
     }
   }
 

@@ -1,20 +1,22 @@
 package com.avilatek.flutter_newpos_sdk
 
-import androidx.annotation.NonNull
+import android.Manifest
+import android.content.Context
+import androidx.core.app.ActivityCompat
+import com.newpos.mposlib.sdk.*
+import io.flutter.Log
+import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
-import com.newpos.mposlib.sdk.*
-import io.flutter.Log
-import android.content.Context;
-import android.Manifest;
-import androidx.core.app.ActivityCompat;
+import io.flutter.plugin.common.MethodChannel as MCLib
+
+import java.io.InputStream
+
 import java.util.*
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 
 
 /** FlutterNewposSdkPlugin */
@@ -35,7 +37,7 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
       _activity = binding.activity as FlutterActivity
     }
-    
+
   override fun onDetachedFromActivityForConfigChanges() {}
   override fun onDetachedFromActivity(){}
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -45,16 +47,18 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     _pluginBinding = flutterPluginBinding;
     _context = _pluginBinding.getApplicationContext();
+      val assetManager = _context.assets;
+      val needing_pin: InputStream = assetManager.open("needing_pin.xml")
 
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_newpos_sdk/methods")
     channel.setMethodCallHandler(this)
     // El delegate del POS. Esta es la implementación del comportamiento que va a tomar el POS
     // al conectarse a la app
-    var delegate = FlutterPosDelegate(channel)
+    var delegate = FlutterPosDelegate(channel,  posManager, needing_pin)
     posManager = NpPosManager.sharedInstance(flutterPluginBinding.getApplicationContext(), delegate)
   }
 
-  override fun onMethodCall(call: MethodCall, result: Result) {
+  override fun onMethodCall(call: MethodCall, result: MCLib.Result) {
     // if (call.method == "getPlatformVersion") {
     //   result.success("Android ${android.os.Build.VERSION.RELEASE}")
     // } else {
@@ -71,11 +75,12 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
                 "completeTransaction" -> {
                     try {
+                        var amount = call.arguments as Int
                         posManager.getDeviceInfo()
                         var cardReadEntity = CardReadEntity();
                         cardReadEntity.setSupportFallback(true)
                         cardReadEntity.setTimeout(60)
-                        cardReadEntity.setAmount(String.format(Locale.forLanguageTag("es-VE"), "%012d", 0))
+                        cardReadEntity.setAmount(String.format(Locale.forLanguageTag("es-VE"), "%012d", amount))
                         cardReadEntity.setTradeType(0)
                         cardReadEntity.setSupportDukpt(true)
                         cardReadEntity.setTrackEncrypt(false)

@@ -1,8 +1,17 @@
 part of flutter_newpos_sdk;
 
-class PinInfo {
-  final String tagRes;
-  final bool needPin;
+/// Represents information about a PIN requirement for a specific transaction.
 
-  const PinInfo({required this.tagRes, required this.needPin});
+class PinInfo {
+  /// Creates a new `PinInfo` object.
+  const PinInfo({
+    required this.tagRes,
+    required this.needPin,
+  });
+
+  /// The response tag, identifying the transaction within the system.
+  final String tagRes;
+
+  /// Whether a PIN is required for the transaction.
+  final bool needPin;
 }
