@@ -8,6 +8,17 @@ A Flutter plugin that adds support for the NEWPOS N98 mPOS unit. Only available 
 
 This library has an implementation [example](https://github.com/Avila-Tek/flutter_newpos_sdk_plugin/tree/main/example) you can use to test all the features available in this plugin. You will need an N98 mPOS unit to test all the features.
 
+## Getting Started
+
+First, you must add the dependency to your Flutter app. To do so, add the latest release to your `pubspec.yaml` dependencies as follows.
+
+```yaml
+dependencies:
+    flutter_newpos_sdk: 
+        
+
+```
+
 ## Usage
 
 First, start by creating an instance of `FlutterNewposSdk`. This class defines all the methods available by the N98 unit.
@@ -28,7 +39,7 @@ Once the POS is connected using the library API, you will see a Bluetooth indica
 
 The next thing you might want to do is read a card to process a payment.
 
-> 🪧 Work in progress. 
+> 🪧 Work in progress. ****
 
 ---
 
