@@ -158,10 +158,12 @@ packages:
   flutter_newpos_sdk:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
-    version: "0.0.1"
+      path: "."
+      ref: "0.0.2-alpha"
+      resolved-ref: "042348d47cd9f1859e5f56517b1aea13af7500da"
+      url: "https://github.com/Avila-Tek/flutter_newpos_sdk_plugin.git"
+    source: git
+    version: "0.0.2-alpha"
   flutter_test:
     dependency: "direct dev"
     description: flutter

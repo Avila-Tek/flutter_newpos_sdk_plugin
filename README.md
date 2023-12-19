@@ -17,9 +17,11 @@ dependencies:
     flutter_newpos_sdk: 
         git:
             url: https://github.com/Avila-Tek/flutter_newpos_sdk_plugin.git
-            ref: 0.0.1-alpha
+            ref: 0.0.2-alpha
 
 ```
+
+> Note: You may set `ref` to `stable` if you want to use the latest stable version available, but it may break your code if a breaking change is made.
 
 ## Usage
 
