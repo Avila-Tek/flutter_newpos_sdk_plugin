@@ -12,6 +12,7 @@ import com.newpos.mposlib.sdk.INpSwipeListener
 import com.newpos.mposlib.sdk.InputInfoEntity
 import io.flutter.Log
 import io.flutter.plugin.common.MethodChannel
+import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.xml.sax.SAXException
@@ -22,14 +23,11 @@ import javax.xml.parsers.ParserConfigurationException
 
 /// newPOS SDK Delegate. Declares the behavior and functionality to be executed when instantiating
 /// the [NpPosManager] class.
-class FlutterPosDelegate(private val channel: MethodChannel, private val posManager: NpPosManager, private val needingPin: InputStream,) : INpSwipeListener {
+class FlutterPosDelegate(private val channel: MethodChannel, private val document: Document) : INpSwipeListener {
 
 
-    fun needsPin(code: String, file: InputStream): Boolean {
+    fun needsPin(code: String): Boolean {
         try {
-            val documentBuilderFactory = DocumentBuilderFactory.newInstance()
-            val documentBuilder = documentBuilderFactory.newDocumentBuilder()
-            val document = documentBuilder.parse(file)
             document.documentElement.normalize()
     
             val rowNodes = document.getElementsByTagName("ROW")
@@ -69,6 +67,8 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val posMana
 
     @SuppressLint("MissingPermission")
     override fun onScannerResult(devInfo: BluetoothDevice?) {
+        Log.d("onScannerResult","--- 🛜NEW SCAN RESULT ---")
+        Log.d("onScannerResult","--- 🛜 LESANPI ---")
         val data = hashMapOf<String, Any>()
         var address = devInfo?.address ?: ""
         var name = devInfo?.name ?: ""
@@ -80,8 +80,6 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val posMana
             channel.invokeMethod("OnScanResponse", data)
         }
 
-        Log.d("onScannerResult","--- 🛜NEW SCAN RESULT ---")
-        Log.d("onScannerResult","--- 🛜 LESANPI ---")
         Log.d("onScannerResult","ADDRESS -> ${devInfo?.address}")
         Log.d("onScannerResult","NAME -> ${devInfo?.name}")
         Log.d("onScannerResult","-------------------------")
@@ -228,29 +226,18 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val posMana
         data["track3"] = track3
         data["tusn"] = tusn
         Handler(Looper.getMainLooper()).post {
-
+            Log.d("Ger Read Card Info","Read Requires pin")
+            
             /// Get requiresPin field
             val track2 = cardInfoEntity!!.track2
             val exp = cardInfoEntity!!.expDate
             val tag9F34 = cardInfoEntity!!.ic55Data.split("9F34").toTypedArray()[1]
-            val requiresPin: Boolean = needsPin(tag9F34.substring(2, 4), needingPin)
+            val requiresPin: Boolean = needsPin(tag9F34.substring(2, 4))
             data["requiresPin"] = requiresPin
-            
-
-            /// Requires pin flow
-            if (requiresPin) {
-                val codeInputEntity = InputInfoEntity()
-                codeInputEntity.setInputType(1);
-                codeInputEntity.setTimeout(30);
-                codeInputEntity.setTitle("Inserte PIN");
-                codeInputEntity.setPan(cardInfoEntity.cardNumber)
-                posManager.getInputInfoFromKB(codeInputEntity);
-
-            } else {
-                // datosIso = TDD_TDC_Data.DatosIso(data_for_iso, dbDatosIso);
-            }
-
+            Log.d("Ger Read Card Info","Read Requires pin finished")
             channel.invokeMethod("OnGetReadCardInfo", data)
+
+
         }
 
     }

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DATA>
+
+    <ROW>
+        <res_codigo>001</res_codigo>
+        <res_variation>001</res_variation>
+        <res_descripcion_es>ERROR DE CONEXIÓN</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>00</res_codigo>
+        <res_variation>0</res_variation>
+        <res_descripcion_es>APROBADO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>01</res_codigo>
+        <res_variation>1</res_variation>
+        <res_descripcion_es>LLAMAR AL BANCO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>02</res_codigo>
+        <res_variation>2</res_variation>
+        <res_descripcion_es>CONTACTE AL BANCO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>03</res_codigo>
+        <res_variation>3</res_variation>
+        <res_descripcion_es>COMERCIO INVÁLIDO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>04</res_codigo>
+        <res_variation>4</res_variation>
+        <res_descripcion_es>RETENER Y LLAMAR</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>05</res_codigo>
+        <res_variation>5</res_variation>
+        <res_descripcion_es>NEGADA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>08</res_codigo>
+        <res_variation>8</res_variation>
+        <res_descripcion_es>EMISOR NO RESPONDE</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>12</res_codigo>
+        <res_variation>12</res_variation>
+        <res_descripcion_es>TRANSACCIÓN INVÁLIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>13</res_codigo>
+        <res_variation>13</res_variation>
+        <res_descripcion_es>MONTO INVÁLIDO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>14</res_codigo>
+        <res_variation>14</res_variation>
+        <res_descripcion_es>TARJETA INVÁLIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>16</res_codigo>
+        <res_variation>16</res_variation>
+        <res_descripcion_es>POS BLOQUEADO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>19</res_codigo>
+        <res_variation>19</res_variation>
+        <res_descripcion_es>TRATE DE NUEVO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>37</res_codigo>
+        <res_variation>37</res_variation>
+        <res_descripcion_es>NO SE REQUIERE ACTUALIZAR PARÁMETROS</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>41</res_codigo>
+        <res_variation>41</res_variation>
+        <res_descripcion_es>RETENER Y LLAMAR</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>43</res_codigo>
+        <res_variation>43</res_variation>
+        <res_descripcion_es>RETENGA Y LLAME</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>46</res_codigo>
+        <res_variation>46</res_variation>
+        <res_descripcion_es>CUENTA CERRADA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>48</res_codigo>
+        <res_variation>48</res_variation>
+        <res_descripcion_es>IMPOSIBLE PROCESAR</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>51</res_codigo>
+        <res_variation>51</res_variation>
+        <res_descripcion_es>SALDO INSUFICIENTE</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>54</res_codigo>
+        <res_variation>54</res_variation>
+        <res_descripcion_es>TARJETA VENCIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>55</res_codigo>
+        <res_variation>55</res_variation>
+        <res_descripcion_es>CLAVE INVÁLIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>58</res_codigo>
+        <res_variation>58</res_variation>
+        <res_descripcion_es>TRANSACCIÓN NO PERMITIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>61</res_codigo>
+        <res_variation>61</res_variation>
+        <res_descripcion_es>EXCEDE LÍMITE DIARIO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>62</res_codigo>
+        <res_variation>62</res_variation>
+        <res_descripcion_es>TARJETA RESTRINGIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>67</res_codigo>
+        <res_variation>67</res_variation>
+        <res_descripcion_es>RETENGA Y LLAME</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>68</res_codigo>
+        <res_variation>68</res_variation>
+        <res_descripcion_es>EMISOR NO RESPONDE</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>75</res_codigo>
+        <res_variation>75</res_variation>
+        <res_descripcion_es>TARJETA BLOQUEADA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>76</res_codigo>
+        <res_variation>76</res_variation>
+        <res_descripcion_es>CUENTA INVÁLIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>77</res_codigo>
+        <res_variation>77</res_variation>
+        <res_descripcion_es>TRANSACCIÓN INVÁLIDA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>78</res_codigo>
+        <res_variation>78</res_variation>
+        <res_descripcion_es>CUENTA INVÁLIDA / TARJETA BLOQUEADA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>80</res_codigo>
+        <res_variation>80</res_variation>
+        <res_descripcion_es>DATO INVÁLIDO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>82</res_codigo>
+        <res_variation>82</res_variation>
+        <res_descripcion_es>DATO INVÁLIDO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>85</res_codigo>
+        <res_variation>85</res_variation>
+        <res_descripcion_es>NO APROBADO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>86</res_codigo>
+        <res_variation>86</res_variation>
+        <res_descripcion_es>NEGADA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>87</res_codigo>
+        <res_variation>87</res_variation>
+        <res_descripcion_es>ERROR EN CLAVE</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>88</res_codigo>
+        <res_variation>88</res_variation>
+        <res_descripcion_es>NEGADA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>91</res_codigo>
+        <res_variation>91</res_variation>
+        <res_descripcion_es>EMISOR NO ACTIVO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>92</res_codigo>
+        <res_variation>92</res_variation>
+        <res_descripcion_es>EMISOR INVÁLIDO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>94</res_codigo>
+        <res_variation>94</res_variation>
+        <res_descripcion_es>NEGADA</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>96</res_codigo>
+        <res_variation>96</res_variation>
+        <res_descripcion_es>EMISOR NO ACTIVO</res_descripcion_es>
+    </ROW>
+    <ROW>
+        <res_codigo>99</res_codigo>
+        <res_variation>99</res_variation>
+        <res_descripcion_es>TRANSACCIÓN DUPLICADA</res_descripcion_es>
+    </ROW>
+
+</DATA>

@@ -1,7 +1,9 @@
 package com.avilatek.flutter_newpos_sdk
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import com.newpos.mposlib.sdk.*
 import io.flutter.Log
@@ -13,11 +15,13 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel as MCLib
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.parsers.ParserConfigurationException
+
 
 import java.io.InputStream
 
 import java.util.*
-
 
 /** FlutterNewposSdkPlugin */
 class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -27,44 +31,91 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var posManager: NpPosManager
+  private var _activityBinding : ActivityPluginBinding? = null;
+  private var activity: FlutterActivity? = null
+  private var _pluginBinding : FlutterPlugin.FlutterPluginBinding? = null;
+  private lateinit var _context : Context;
+
+    // Constants
   private var defaultGetCardNumberTimeOut = 20
   private var defaultScanBlueDeviceTimeOut = 500
   private var defaultDisplayKeepShowTime = 3
-  private lateinit var _context : Context;
-  private lateinit var _pluginBinding : FlutterPlugin.FlutterPluginBinding;
-   private lateinit var _activity : FlutterActivity;
 
-    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-      _activity = binding.activity as FlutterActivity
-    }
-
-  override fun onDetachedFromActivityForConfigChanges() {}
-  override fun onDetachedFromActivity(){}
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    _activity = binding.activity as FlutterActivity
-  }
-
-  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    _pluginBinding = flutterPluginBinding;
-    _context = _pluginBinding.getApplicationContext();
-      val assetManager = _context.assets;
-      val needing_pin: InputStream = assetManager.open("needing_pin.xml")
-
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_newpos_sdk/methods")
+      Log.d("FlutterNewposSdkPlugin", "onReattachedToActivityForConfigChanges")
+      activity = binding.getActivity() as FlutterActivity
+      _activityBinding = binding;
+    }
+    
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
+    
+    override fun onDetachedFromActivityForConfigChanges() {
+        _activityBinding = null;
+    }
+    override fun onDetachedFromActivity(){
+        _activityBinding = null;
+    }
+  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    Log.d("FlutterNewposSdkPlugin", "onAttachedToActivity")
+    _activityBinding = binding;
+    activity = binding.activity as FlutterActivity
+    channel = MethodChannel(_pluginBinding!!.binaryMessenger, "flutter_newpos_sdk/methods")
+    Log.d("FlutterNewposSdkPlugin", "MethodChannel")
     channel.setMethodCallHandler(this)
+    Log.d("FlutterNewposSdkPlugin", "setMethodCallHandler")
+
+    Log.d("FlutterNewposSdkPlugin", "registrar")
+
+    val assetManager = getApplicationContext()!!.assets
+    val needingPin: InputStream = assetManager.open("needing_pin.xml")
+    val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+    val documentBuilder = documentBuilderFactory.newDocumentBuilder()
+    val document = documentBuilder.parse(needingPin)
+    document.documentElement.normalize()
+    Log.d("FlutterNewposSdkPlugin", "assetManager")
     // El delegate del POS. Esta es la implementación del comportamiento que va a tomar el POS
     // al conectarse a la app
-    var delegate = FlutterPosDelegate(channel,  posManager, needing_pin)
-    posManager = NpPosManager.sharedInstance(flutterPluginBinding.getApplicationContext(), delegate)
+    var delegate = FlutterPosDelegate(channel, document)
+    Log.d("FlutterNewposSdkPlugin", "delegate")
+    posManager = NpPosManager.sharedInstance(_pluginBinding!!.getApplicationContext(), delegate)
+    Log.d("FlutterNewposSdkPlugin", "posManager")
+    
+
   }
 
-  override fun onMethodCall(call: MethodCall, result: MCLib.Result) {
-    // if (call.method == "getPlatformVersion") {
-    //   result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    // } else {
-    //   result.notImplemented()
-    // }
-    ActivityCompat.requestPermissions(_activity, arrayOf(Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_PRIVILEGED), 1)
+
+
+  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    Log.d("FlutterNewposSdkPlugin", "onAttachedToEngine")
+      _pluginBinding = flutterPluginBinding;
+    _context = flutterPluginBinding.getApplicationContext();
+    // channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_newpos_sdk/methods")
+    // Log.d("FlutterNewposSdkPlugin", "MethodChannel")
+    
+  }
+
+    override fun onMethodCall(call: MethodCall, result: MCLib.Result) {
+    var activity = getActivity()
+    Log.d("FlutterNewposSdkPlugin", "Activity $activity")
+
+    if (activity == null) {
+        Log.d("FlutterNewposSdkPlugin", "Activity is Null")
+        return
+    }
+               if (ActivityCompat.checkSelfPermission(
+                activity,
+                   Manifest.permission.BLUETOOTH_CONNECT
+
+               ) != PackageManager.PERMISSION_GRANTED
+           ) {
+
+               ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_PRIVILEGED), 1)
+           }
+    Log.d("FlutterNewposSdkPlugin", "requestPermissions")
+    Log.d("FlutterNewposSdkPlugin", "Method called ${call.method}")
+
 
             when (call.method) {
                 "flutterHotRestart" -> {
@@ -149,6 +200,16 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                         result.success(true)
                     }
                 }
+                "getInputInfoFromKB" -> {
+                    Log.d("MethodChannel/Kotlin", "getInputInfoFromKB method received")
+                    val codeInputEntity = InputInfoEntity()
+                    codeInputEntity.setInputType(1);
+                    codeInputEntity.setTimeout(30);
+                    codeInputEntity.setTitle("Inserte PIN");
+                    codeInputEntity.setPan(call.arguments as? String)
+                    posManager.getInputInfoFromKB(codeInputEntity);
+                    result.success(true)
+                }
                 "getDeviceInfo" -> {
                     Log.d("MethodChannel/Kotlin", "getDeviceInfo method received")
                     try {
@@ -217,9 +278,17 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                     result.notImplemented()
                 }
             }
+    Log.d("FlutterNewposSdkPlugin", "Method called ${call.method} finished")
+        
   }
 
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
+  fun getApplicationContext(): Context? {
+    return _pluginBinding?.applicationContext ?: null
+    }
+
+    fun getActivity(): Activity? {
+        return _activityBinding?.activity ?: null
+    }
+
+ 
 }
