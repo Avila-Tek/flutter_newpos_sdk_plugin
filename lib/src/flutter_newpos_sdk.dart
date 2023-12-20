@@ -735,7 +735,7 @@ class FlutterNewposSdk {
   /// print(card.cardholderName); // John Doe
   /// ```
   static Future<CompleteTransactionResult> completeTransaction({
-    required double amount,
+    required int amount,
   }) async {
     // Try block to handle potential errors during the transaction process.
 
@@ -762,6 +762,7 @@ class FlutterNewposSdk {
         return ReadCardInfo.fromJson(convertedMap);
       });
 
+      await _invokeMethod('completeTransaction', amount);
       // 2. Get the first `ReadCardInfo` object from the stream within 10 seconds.
       // If no card is read within the timeout, throw an exception.
       final card = await getFirstResultInStream(
@@ -780,6 +781,7 @@ class FlutterNewposSdk {
 
       // 1. Check if the read card requires a PIN based on the `ReadCardInfo.requiresPin` property.
       final cardRequiresPin = card.requiresPin;
+      log('Requires pin $cardRequiresPin');
 
       // Example 1: No PIN required
 
@@ -798,6 +800,8 @@ class FlutterNewposSdk {
       final pinInputStream = FlutterNewposSdk._methodStream.stream
           .where((m) => m.method == 'OnGetReadInputInfo')
           .map((m) => m.arguments as String? ?? '');
+
+      await _invokeMethod('getInputInfoFromKB', card.cardNumber);
 
       final pin = await getFirstResultInStream(
         pinInputStream,

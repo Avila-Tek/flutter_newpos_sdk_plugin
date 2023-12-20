@@ -253,7 +253,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                   LoadingDialog.show(context);
                                   final result = await FlutterNewposSdk
                                       .completeTransaction(
-                                    amount: 0,
+                                    amount: 1000,
                                   );
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(

@@ -1,6 +1,7 @@
 library flutter_newpos_sdk;
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 
