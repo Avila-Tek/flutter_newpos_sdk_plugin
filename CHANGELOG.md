@@ -1,3 +1,10 @@
+## 0.1.0-stable
+* stable version with fully featured POS communication and card processing
+
+
+## 0.0.3-alpha
+* feat: completeTransaction method and PIN handling
+
 ## 0.0.2-alpha
 * Remove old dependencies from example project
 
