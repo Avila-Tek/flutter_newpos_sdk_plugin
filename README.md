@@ -63,7 +63,9 @@ Once the POS is connected using the library API, you will see a Bluetooth indica
 
 The next thing you might want to do is read a card to process a payment.
 
-> 🪧 Work in progress. ****
+To do so, call the method `FlutterNewposSdk.instance.completeTransaction` and pass the amount of the transaction as a parameter. The method **must be called before introducing the card in the reader**. The POS will fail if you do it the other way around.
+
+When reading the card, the POS might ask for the card's secret PIN if it is required. Then, a `CompleteTransactionResult` object will be returned with the card's data that will be **required** by the payment service.
 
 ---
 
