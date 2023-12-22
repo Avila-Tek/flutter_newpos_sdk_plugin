@@ -69,6 +69,6 @@ When reading the card, the POS might ask for the card's secret PIN if it is requ
 
 ---
 
-For more information, read the documentation of this library.
+For more information, you can read the [library documentation](https://avila-tek.github.io/flutter_newpos_sdk_plugin/flutter_newpos_sdk/flutter_newpos_sdk-library.html).
 
 
