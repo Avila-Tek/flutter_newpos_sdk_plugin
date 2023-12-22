@@ -17,7 +17,7 @@ dependencies:
     flutter_newpos_sdk: 
         git:
             url: https://github.com/Avila-Tek/flutter_newpos_sdk_plugin.git
-            ref: 0.0.2-alpha
+            ref: 0.1.0-stable
 
 ```
 
