@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 7.0.0-dev">
+  <meta name="description" content="flutter_newpos_sdk API docs, for the Dart programming language.">
+  <title>flutter_newpos_sdk - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">flutter_newpos_sdk package</li>
+  </ol>
+  <div class="self-name">flutter_newpos_sdk</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="flutter_newpos_sdk">flutter_newpos_sdk</h1>
+<p><img alt="NEWPOS N98 unit" src="https://i.imgur.com/6HkNhh2.png" width="100%"></p>
+<p>A Flutter plugin that adds support for the NEWPOS N98 mPOS unit. Only available for Android.</p>
+<h2 id="example">Example</h2>
+<p>This library has an implementation <a href="https://github.com/Avila-Tek/flutter_newpos_sdk_plugin/tree/main/example">example</a> you can use to test all the features available in this plugin. You will need an N98 mPOS unit to test all the features.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>First, you must add the dependency to your Flutter app. To do so, add the latest release to your <code>pubspec.yaml</code> dependencies as follows.</p>
+<pre class="language-YAML"><code class="language-YAML">dependencies:
+    flutter_newpos_sdk: 
+        git:
+            url: https://github.com/Avila-Tek/flutter_newpos_sdk_plugin.git
+            ref: 0.0.2-alpha
+
+</code></pre>
+<p>The next step is adding Bluetooth permission to your app. In your <code>android/app/src/main/AndroidManifest.xml</code> add:</p>
+<pre class="language-xml"><code class="language-xml">&lt;!-- Tell Google Play Store that your app uses Bluetooth LE
+     Set android:required="true" if bluetooth is necessary --&gt;
+&lt;uses-feature android:name="android.hardware.bluetooth_le" android:required="false" /&gt;
+
+&lt;!-- New Bluetooth permissions in Android 12
+https://developer.android.com/about/versions/12/features/bluetooth-permissions --&gt;
+&lt;uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" /&gt;
+&lt;uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /&gt;
+
+&lt;!-- legacy for Android 11 or lower --&gt;
+&lt;uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /&gt;
+&lt;uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" /&gt;
+&lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30"/&gt;
+
+&lt;!-- legacy for Android 9 or lower --&gt;
+&lt;uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="28" /&gt;
+</code></pre>
+<blockquote>
+<p>Note: You may set <code>ref</code> to <code>stable</code> if you want to use the latest stable version available, but it may break your code if a breaking change is made.</p>
+</blockquote>
+<h2 id="usage">Usage</h2>
+<p>First, start by creating an instance of <code>FlutterNewposSdk</code>. This class defines all the methods available by the N98 unit.</p>
+<pre class="language-dart"><code class="language-dart">final pos = FlutterNewposSdk.instance;
+</code></pre>
+<p>The first step to communicate with the device is connecting to it via Bluetooth. This <strong>must</strong> be done with the <code>FlutterNewposSdk.instance.connectToBluetoothDevice</code> method, instead of manually connecting via the OS Bluetooth settings.</p>
+<p>The <code>connectToBluetoothDevice</code> method requires the device's MAC address parameter. In order to get the MAC address of the POS, you must scan the Bluetooth devices in-app. You can use the integrated <code>FlutterNewposSdk.instance.scanBluetoothDevices</code> method, or other Bluetooth library to do so.</p>
+<blockquote>
+<p>📍Note: You must call <code>FlutterNewposSdk.instance.connectToBluetoothDevice</code> in every app session to communicate with the POS, even if it is already connected to the smartphone. So, it is adviced to remember the MAC address to avoid having to scan for Bluetooth devices every time the app is opened.</p>
+</blockquote>
+<p>Once the POS is connected using the library API, you will see a Bluetooth indicator at the top-center side of the screen of the N98 device. This means you are ready to use all the available features!</p>
+<h2 id="reading-a-card">Reading a card</h2>
+<p>The next thing you might want to do is read a card to process a payment.</p>
+<p>To do so, call the method <code>FlutterNewposSdk.instance.completeTransaction</code> and pass the amount of the transaction as a parameter. The method <strong>must be called before introducing the card in the reader</strong>. The POS will fail if you do it the other way around.</p>
+<p>When reading the card, the POS might ask for the card's secret PIN if it is required. Then, a <code>CompleteTransactionResult</code> object will be returned with the card's data that will be required by the payment service.</p>
+<hr>
+<p>For more information, read the documentation of this library.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="flutter_newpos_sdk">
+  <span class="name"><a href="flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">flutter_newpos_sdk package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">flutter_newpos_sdk</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_newpos_sdk
+      0.0.2-alpha
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
