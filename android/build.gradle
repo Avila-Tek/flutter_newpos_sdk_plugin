@@ -85,5 +85,4 @@ android {
 
 dependencies {
        compileOnly files('libs/mposlib-release.aar')
-
 }
