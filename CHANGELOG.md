@@ -1,3 +1,13 @@
+## 0.1.0-stable
+* stable version with fully featured POS communication and card processing
+
+
+## 0.0.3-alpha
+* feat: completeTransaction method and PIN handling
+
+## 0.0.2-alpha
+* Remove old dependencies from example project
+
 ## 0.0.1-alpha
 
 * Start of Flutter newPOS SDK plugin!
@@ -7,3 +17,4 @@
   * Send data to and read from POS
   * Read card data
 * WIP: Set order amount in POS and PIN for required cards.
+

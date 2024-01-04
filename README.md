@@ -17,9 +17,31 @@ dependencies:
     flutter_newpos_sdk: 
         git:
             url: https://github.com/Avila-Tek/flutter_newpos_sdk_plugin.git
-            ref: 0.0.1-alpha
+            ref: 0.1.0-stable
 
 ```
+
+The next step is adding Bluetooth permission to your app. In your `android/app/src/main/AndroidManifest.xml` add: 
+```xml
+<!-- Tell Google Play Store that your app uses Bluetooth LE
+     Set android:required="true" if bluetooth is necessary -->
+<uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
+
+<!-- New Bluetooth permissions in Android 12
+https://developer.android.com/about/versions/12/features/bluetooth-permissions -->
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+<!-- legacy for Android 11 or lower -->
+<uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30"/>
+
+<!-- legacy for Android 9 or lower -->
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="28" />
+```
+
+> Note: You may set `ref` to `stable` if you want to use the latest stable version available, but it may break your code if a breaking change is made.
 
 ## Usage
 
@@ -41,10 +63,12 @@ Once the POS is connected using the library API, you will see a Bluetooth indica
 
 The next thing you might want to do is read a card to process a payment.
 
-> 🪧 Work in progress. ****
+To do so, call the method `FlutterNewposSdk.instance.completeTransaction` and pass the amount of the transaction as a parameter. The method **must be called before introducing the card in the reader**. The POS will fail if you do it the other way around.
+
+When reading the card, the POS might ask for the card's secret PIN if it is required. Then, a `CompleteTransactionResult` object will be returned with the card's data that will be **required** by the payment service.
 
 ---
 
-For more information, read the documentation of this library.
+For more information, you can read the [library documentation](https://avila-tek.github.io/flutter_newpos_sdk_plugin/flutter_newpos_sdk/flutter_newpos_sdk-library.html).
 
 

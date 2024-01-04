@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the connectToBluetoothDevice method from the FlutterNewposSdk class, for the Dart programming language.">
+  <title>connectToBluetoothDevice method - FlutterNewposSdk class - flutter_newpos_sdk library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/FlutterNewposSdk-class.html">FlutterNewposSdk</a></li>
+    <li class="self-crumb">connectToBluetoothDevice static method</li>
+  </ol>
+  <div class="self-name">connectToBluetoothDevice</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="flutter_newpos_sdk&#47;FlutterNewposSdk-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-method">connectToBluetoothDevice</span> static method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+<span class="name ">connectToBluetoothDevice</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="connectToBluetoothDevice-param-macAddress"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">macAddress</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Connects to a Bluetooth device, if in range, with the specified MAC address.</p>
+<p><strong>NOTE:</strong> This function
+must be used to connect to the newPOS device, else the other functions will
+not work.</p>
+<p>The function uses a stream to verify if the connection was successful.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>macAddress</code>: The MAC address of the Bluetooth device you want to connect to.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>The function returns a <code>Future&lt;bool&gt;</code>. The <code>Future</code> resolves to <code>true</code> if the connection was successful, or <code>false</code> if an error occurred.</p>
+<p><strong>Exceptions:</strong></p>
+<p>The function throws a <code>BluetoothConnectionFailed</code> if the connection to the Bluetooth device fails for any reason.</p>
+<p><strong>Example:</strong></p>
+<pre class="language-dart"><code class="language-dart">// Connects the POS device to the Bluetooth device with the MAC address "00:11:22:33:44:55".
+final result = await FlutterNewposSdk.connectToBluetoothDevice('00:11:22:33:44:55');
+
+// Checks if the connection was successful.
+if (result) {
+  print('The POS device is connected to the Bluetooth device');
+} else {
+  print('The POS device could not connect to the Bluetooth device');
+}
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">static Future&lt;bool&gt; connectToBluetoothDevice(String macAddress) async {
+  &#47;&#47;&#47; Stream method
+  final stream = FlutterNewposSdk._methodStream.stream
+      .where((m) =&gt; m.method == &#39;OnDeviceConnected&#39;)
+      .map((m) {
+    return m.arguments as bool;
+  });
+
+  try {
+    await _invokeMethod(&#39;connectToBluetoothDevice&#39;, macAddress);
+    final streamOutputs = await getFirstResultInStream(
+      stream,
+      const Duration(seconds: 5),
+    );
+    final result = streamOutputs ?? false;
+    if (result) {
+      await displayText(text: &#39;Bluetooth connected&#39;);
+    }
+    return result;
+  } on TimeoutException {
+    return false;
+  } catch (e) {
+    throw BluetoothConnectionFailed(code: &#39;&#39;);
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/FlutterNewposSdk-class.html">FlutterNewposSdk</a></li>
+    <li class="self-crumb">connectToBluetoothDevice static method</li>
+</ol>
+
+
+    <h5>FlutterNewposSdk class</h5>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_newpos_sdk
+      0.0.2-alpha
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

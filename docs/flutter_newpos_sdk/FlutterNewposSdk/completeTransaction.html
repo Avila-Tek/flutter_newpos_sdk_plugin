@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the completeTransaction method from the FlutterNewposSdk class, for the Dart programming language.">
+  <title>completeTransaction method - FlutterNewposSdk class - flutter_newpos_sdk library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/FlutterNewposSdk-class.html">FlutterNewposSdk</a></li>
+    <li class="self-crumb">completeTransaction static method</li>
+  </ol>
+  <div class="self-name">completeTransaction</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="flutter_newpos_sdk&#47;FlutterNewposSdk-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-method">completeTransaction</span> static method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../flutter_newpos_sdk/CompleteTransactionResult-class.html">CompleteTransactionResult</a></span>&gt;</span></span>
+<span class="name ">completeTransaction</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="completeTransaction-param-amount">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">amount</span>}</span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Completes a transaction for the specified amount and returns the result.</p>
+<p><strong>Input:</strong></p>
+<ul>
+<li><strong><code>amount</code>:</strong> The amount required for the transaction (e.g., 10.50). Please note that the amount parameter needs to be an integer, meaning whole numbers and cents without decimal points. You can convert decimal values by multiplying them by 100 and rounding them down (e.g., $10.50 becomes 1050).</li>
+</ul>
+<p><strong>Output:</strong></p>
+<ul>
+<li><strong><code>CompleteTransactionResult</code>:</strong> An object that contains the card information and PIN, if necessary.</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<pre class="language-dart"><code class="language-dart">// Completes a transaction for $10.25.
+final amount = 10.25;
+final amountAsDouble = double.parse(amount.toStringAsFixed(2));
+final amountAsInt = (amountAsDouble * 100).toInt();
+final result = await FlutterNewposSdk.completeTransaction(amount: amountAsInt);
+</code></pre>
+<p><strong>Example 1:</strong> No PIN required
+In this example, the card does not require a PIN. The function simply returns a <code>CompleteTransactionResult</code> with the card information.</p>
+<pre class="language-dart"><code class="language-dart">// Completes a transaction for $10.00 with a card that does not require PIN.
+final result = await FlutterNewposSdk.completeTransaction(amount: 1000);
+
+// The card does not require a PIN.
+final card = result.card;
+
+// Prints the card information.
+print(card.cardNumber); // 1234-5678-9012-3456
+print(card.cardholderName); // John Doe
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">&#47;&#47;&#47;
+
+&#47;&#47;&#47; **Input:**
+
+&#47;&#47;&#47; * **`amount`:** The amount required for the transaction (e.g., 10.50). Please note that the amount parameter needs to be an integer, meaning whole numbers and cents without decimal points. You can convert decimal values by multiplying them by 100 and rounding them down (e.g., $10.50 becomes 1050).
+
+&#47;&#47;&#47;
+
+&#47;&#47;&#47; **Output:**
+
+&#47;&#47;&#47; * **`CompleteTransactionResult`:** An object that contains the card information and PIN, if necessary.
+
+&#47;&#47;&#47;
+
+&#47;&#47;&#47; **Usage:**
+
+&#47;&#47;&#47; ```dart
+&#47;&#47;&#47; &#47;&#47; Completes a transaction for $10.25.
+&#47;&#47;&#47; final amount = 10.25;
+&#47;&#47;&#47; final amountAsDouble = double.parse(amount.toStringAsFixed(2));
+&#47;&#47;&#47; final amountAsInt = (amountAsDouble * 100).toInt();
+
+&#47;&#47;&#47; final result = await FlutterNewposSdk.completeTransaction(amount: amountAsInt);
+&#47;&#47;&#47; ```
+
+&#47;&#47;&#47;
+
+&#47;&#47;&#47; **Example 1:** No PIN required
+
+&#47;&#47;&#47; In this example, the card does not require a PIN. The function simply returns a `CompleteTransactionResult` with the card information.
+
+&#47;&#47;&#47; ```dart
+&#47;&#47;&#47; &#47;&#47; Completes a transaction for $10.00 with a card that does not require PIN.
+&#47;&#47;&#47; final result = await FlutterNewposSdk.completeTransaction(amount: 1000);
+&#47;&#47;&#47;
+&#47;&#47;&#47; &#47;&#47; The card does not require a PIN.
+&#47;&#47;&#47; final card = result.card;
+&#47;&#47;&#47;
+&#47;&#47;&#47; &#47;&#47; Prints the card information.
+&#47;&#47;&#47; print(card.cardNumber); &#47;&#47; 1234-5678-9012-3456
+&#47;&#47;&#47; print(card.cardholderName); &#47;&#47; John Doe
+&#47;&#47;&#47; ```
+static Future&lt;CompleteTransactionResult&gt; completeTransaction({
+  required int amount,
+}) async {
+  &#47;&#47; Try block to handle potential errors during the transaction process.
+
+  try {
+    &#47;&#47; **Input:**
+
+    &#47;&#47; We only require the `amount` as input for the transaction initiation.
+
+    &#47;&#47; **Card Information:**
+
+    &#47;&#47; 1. Use `FlutterNewposSdk._methodStream.stream` to listen for the &quot;OnGetReadCardInfo&quot; event.
+    &#47;&#47; 2. Filter the stream to only get relevant events.
+    &#47;&#47; 3. Map the event to a `ReadCardInfo` object using conversion logic.
+    final stream = FlutterNewposSdk._methodStream.stream
+        .where((m) =&gt; m.method == &#39;OnGetReadCardInfo&#39;)
+        .map((m) {
+      final arguments = m.arguments as Map&lt;Object?, Object?&gt;;
+      final convertedMap = &lt;String, dynamic&gt;{};
+      arguments.forEach((key, value) {
+        if (key is String) {
+          convertedMap[key] = value;
+        }
+      });
+      return ReadCardInfo.fromJson(convertedMap);
+    });
+
+    await _invokeMethod(&#39;completeTransaction&#39;, amount);
+    &#47;&#47; 2. Get the first `ReadCardInfo` object from the stream within 10 seconds.
+    &#47;&#47; If no card is read within the timeout, throw an exception.
+    final card = await getFirstResultInStream(
+      stream,
+      const Duration(seconds: 10),
+    );
+
+    if (card == null) {
+      throw const FlutterPosException(
+        code: &#39;COMPLETE_TRANSACTION_EXCEPTION&#39;,
+        message: &#39;Exception reading card&#39;,
+      );
+    }
+
+    &#47;&#47; **PIN Handling:**
+
+    &#47;&#47; 1. Check if the read card requires a PIN based on the `ReadCardInfo.requiresPin` property.
+    final cardRequiresPin = card.requiresPin;
+    log(&#39;Requires pin $cardRequiresPin&#39;);
+
+    &#47;&#47; Example 1: No PIN required
+
+    if (!cardRequiresPin) {
+      &#47;&#47; Simply return the `CompleteTransactionResult` with the `card` information.
+      return CompleteTransactionResult(card: card);
+    }
+
+    &#47;&#47; Example 2: PIN required
+
+    &#47;&#47; 2. Use `FlutterNewposSdk._methodStream.stream` to listen for the &quot;OnGetReadInputInfo&quot; event.
+    &#47;&#47; This event is triggered when the device prompts the user for input (likely the PIN).
+    &#47;&#47; 3. Filter the stream for relevant events and map them to strings.
+    &#47;&#47; 4. Get the first string value from the stream within 10 seconds.
+    &#47;&#47; This assumes the user successfully enters the PIN within the timeout.
+    final pinInputStream = FlutterNewposSdk._methodStream.stream
+        .where((m) =&gt; m.method == &#39;OnGetReadInputInfo&#39;)
+        .map((m) =&gt; m.arguments as String? ?? &#39;&#39;);
+
+    await _invokeMethod(&#39;getInputInfoFromKB&#39;, card.cardNumber);
+
+    final pin = await getFirstResultInStream(
+      pinInputStream,
+      const Duration(seconds: 10),
+    );
+
+    &#47;&#47; Return the `CompleteTransactionResult` with both `card` and `pin` information.
+    return CompleteTransactionResult(card: card, pin: pin);
+  } &#47;&#47; Exceptions handling:
+  &#47;&#47; Rethrow TimeoutExceptions to propagate them to the caller.
+  on TimeoutException {
+    rethrow;
+  }
+  &#47;&#47; Catch any other exceptions and throw a customized `BluetoothConnectionFailed` exception.
+  catch (e) {
+    throw BluetoothConnectionFailed();
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/FlutterNewposSdk-class.html">FlutterNewposSdk</a></li>
+    <li class="self-crumb">completeTransaction static method</li>
+</ol>
+
+
+    <h5>FlutterNewposSdk class</h5>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_newpos_sdk
+      0.0.2-alpha
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

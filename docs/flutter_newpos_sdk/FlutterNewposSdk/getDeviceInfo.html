@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getDeviceInfo method from the FlutterNewposSdk class, for the Dart programming language.">
+  <title>getDeviceInfo method - FlutterNewposSdk class - flutter_newpos_sdk library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/FlutterNewposSdk-class.html">FlutterNewposSdk</a></li>
+    <li class="self-crumb">getDeviceInfo static method</li>
+  </ol>
+  <div class="self-name">getDeviceInfo</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="flutter_newpos_sdk&#47;FlutterNewposSdk-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-method">getDeviceInfo</span> static method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../flutter_newpos_sdk/DeviceInfo-class.html">DeviceInfo</a></span>&gt;</span></span>
+<span class="name ">getDeviceInfo</span>(<wbr>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Returns the newPOS's device information.</p>
+<p>This function returns a <code>DeviceInfo</code> object, which contains information about the device's firmware version, device type, KSN, and current ele per.</p>
+<p>If the device information cannot be obtained, the function throws a <code>FlutterPosException</code>.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">final deviceInfo = await FlutterNewposSdk.getDeviceInfo();
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li>None.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<p>A <code>DeviceInfo</code> object containing information about the device.</p>
+<p><strong>Throws:</strong></p>
+<ul>
+<li><code>FlutterPosException</code> with the code <code>GET_DEVICE_INFO_TIMEOUT</code> if the device information cannot be obtained within the timeout period.</li>
+<li><code>FlutterPosException</code> with the code <code>GET_DEVICE_INFO_FAILED</code> if an unknown error occurs while getting the device information.</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre class="language-dart"><code class="language-dart">final deviceInfo = await FlutterNewposSdk.getDeviceInfo();
+print(deviceInfo.firmwareVersion);
+print(deviceInfo.deviceType);
+print(deviceInfo.ksn);
+print(deviceInfo.currentElePer);
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">static Future&lt;DeviceInfo&gt; getDeviceInfo() async {
+  &#47;&#47;&#47; Stream method
+  final stream = FlutterNewposSdk._methodStream.stream
+      .where((m) =&gt; m.method == &#39;OnGetDeviceInfo&#39;)
+      .map((m) {
+    final arguments = m.arguments as Map&lt;Object?, Object?&gt;;
+    final convertedMap = &lt;dynamic, dynamic&gt;{};
+    arguments.forEach((key, value) {
+      if (key is String) {
+        convertedMap[key] = value;
+      }
+    });
+    return convertedMap;
+  }).map(
+    (event) {
+      try {
+        return DeviceInfo.fromMap(event);
+      } catch (e) {
+        throw const FlutterPosException(
+          code: &#39;GET_DEVICE_INFO_FAILED&#39;,
+          message: &#39;Unknown error getting device info&#39;,
+        );
+      }
+    },
+  );
+  try {
+    await _invokeMethod(
+      &#39;getDeviceInfo&#39;,
+    );
+    final result = await getFirstResultInStream(
+      stream,
+      const Duration(seconds: 5),
+    );
+
+    final success = result != null;
+
+    if (success) {
+      return result;
+    } else {
+      throw const FlutterPosException(
+        code: &#39;GET_DEVICE_INFO_FAILED&#39;,
+        message: &#39;Unknown error getting device info&#39;,
+      );
+    }
+  } on TimeoutException {
+    throw const FlutterPosException(
+      code: &#39;GET_DEVICE_INFO_TIMEOUT&#39;,
+      message: &#39;Timeout getting device info&#39;,
+    );
+  } catch (e) {
+    throw const FlutterPosException(
+      code: &#39;GET_DEVICE_INFO_FAILED&#39;,
+      message: &#39;Unknown error getting device info&#39;,
+    );
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/flutter_newpos_sdk-library.html">flutter_newpos_sdk</a></li>
+    <li><a href="../../flutter_newpos_sdk/FlutterNewposSdk-class.html">FlutterNewposSdk</a></li>
+    <li class="self-crumb">getDeviceInfo static method</li>
+</ol>
+
+
+    <h5>FlutterNewposSdk class</h5>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_newpos_sdk
+      0.0.2-alpha
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
