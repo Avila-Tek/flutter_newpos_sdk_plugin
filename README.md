@@ -42,6 +42,23 @@ https://developer.android.com/about/versions/12/features/bluetooth-permissions -
 ```
 
 > Note: You may set `ref` to `stable` if you want to use the latest stable version available, but it may break your code if a breaking change is made.
+>
+
+Lastly, you will need to add the mPOS SDK's AAR library to your project's `android` folder. Then, declare the dependency in the app-level gradle.
+
+```gradle
+// ...
+
+dependencies {
+    // Add the path of the AAR file relative to the build.gradle file (recommended, avoid absolute **paths**)
+    compileOnly files('path/to/mposlib-release.aar') 
+}
+
+```
+
+This step is important, else your app will not be able to use any of the functions of the POS device.
+
+You can [download the AAR file here](https://github.com/Avila-Tek/flutter_newpos_sdk_plugin/releases/download/0.1.0-stable/mposlib-release.aar).
 
 ## Usage
 
