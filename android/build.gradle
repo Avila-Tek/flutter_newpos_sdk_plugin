@@ -84,10 +84,6 @@ android {
 }
 
 dependencies {
-    // implementation fileTree(dir: 'libs', include: ['*.aar'])
-    // implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-    // implementation (name: 'libs/mposlib-release', ext: 'aar')
-    // implementation (name: 'mposlib-release', ext: 'aar')
-    compileOnly files('libs/mposlib-release.aar')
+       compileOnly files('libs/mposlib-release.aar')
 
 }

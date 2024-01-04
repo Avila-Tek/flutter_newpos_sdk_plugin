@@ -1,10 +1,15 @@
 package com.avilatek.flutter_newpos_sdk
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Looper
 import androidx.core.app.ActivityCompat
+import com.newpos.mposlib.sdk.INpSwipeListener
 import com.newpos.mposlib.sdk.*
 import io.flutter.Log
 import io.flutter.embedding.android.FlutterActivity
@@ -14,10 +19,14 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.xml.sax.SAXException
+import java.io.IOException
 import io.flutter.plugin.common.MethodChannel as MCLib
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
-
 
 import java.io.InputStream
 
@@ -77,10 +86,16 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     Log.d("FlutterNewposSdkPlugin", "assetManager")
     // El delegate del POS. Esta es la implementación del comportamiento que va a tomar el POS
     // al conectarse a la app
-    var delegate = FlutterPosDelegate(channel, document)
-    Log.d("FlutterNewposSdkPlugin", "delegate")
-    posManager = NpPosManager.sharedInstance(_pluginBinding!!.getApplicationContext(), delegate)
-    Log.d("FlutterNewposSdkPlugin", "posManager")
+    try {
+        val delegate = FlutterPosDelegate(channel, document)
+        Log.d("FlutterNewposSdkPlugin", "delegate")
+        posManager = NpPosManager.sharedInstance(_pluginBinding!!.applicationContext, delegate)
+        Log.d("FlutterNewposSdkPlugin", "posManager")
+    } catch (error: Throwable) {  // Catch any type of Throwable
+        Log.e("FlutterNewposSdkPlugin", "Error occurred: $error")
+        Log.e("FlutterNewposSdkPlugin", error.stackTraceToString())
+        // Handle the error appropriately, e.g., display an error message or retry
+    }
     
 
   }

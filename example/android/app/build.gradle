@@ -75,7 +75,8 @@ flutter {
 }
 
 dependencies {
-    implementation files('/Users/lesanpi/avila-tek/flutter_newpos_sdk_plugin/example/android/app/src/main/libs/mposlib-release.aar')
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+    compileOnly files('libs/mposlib-release.aar')
     implementation 'com.android.support:multidex:1.0.3'
 }
 
