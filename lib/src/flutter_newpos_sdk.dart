@@ -759,6 +759,7 @@ class FlutterNewposSdk {
             convertedMap[key] = value;
           }
         });
+        log('From map $convertedMap', name: 'completeTransaction');
         return ReadCardInfo.fromJson(convertedMap);
       });
 

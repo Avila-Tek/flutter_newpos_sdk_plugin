@@ -557,7 +557,7 @@ class ReadCardView extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  readCardInfo.cardType.toString(),
+                  readCardInfo.readCardMethod.toString(),
                 ),
               ),
             ),

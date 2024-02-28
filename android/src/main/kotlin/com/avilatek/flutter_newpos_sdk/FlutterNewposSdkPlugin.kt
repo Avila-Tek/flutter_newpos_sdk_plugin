@@ -78,16 +78,43 @@ class FlutterNewposSdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     Log.d("FlutterNewposSdkPlugin", "registrar")
 
     val assetManager = getApplicationContext()!!.assets
+    /// Needing pin file
     val needingPin: InputStream = assetManager.open("needing_pin.xml")
     val documentBuilderFactory = DocumentBuilderFactory.newInstance()
     val documentBuilder = documentBuilderFactory.newDocumentBuilder()
     val document = documentBuilder.parse(needingPin)
     document.documentElement.normalize()
-    Log.d("FlutterNewposSdkPlugin", "assetManager")
+
+      Log.d("FlutterNewposSdkPlugin", "assetManager")
+
+
+      /// AIDS file
+//      val assetManager2 = getApplicationContext()!!.assets
+      val aids: InputStream = assetManager.open("AIDS.xml")
+    val documentBuilderFactoryAids = DocumentBuilderFactory.newInstance()
+    val documentBuilderAids = documentBuilderFactoryAids.newDocumentBuilder()
+    val documentAids = documentBuilderAids.parse(aids)
+    documentAids.documentElement.normalize()
+    Log.d("FlutterNewposSdkPlugin", "assetManagerAids")
+
+
+    /// BINES file
+//      val assetManager3 = getApplicationContext()!!.assets
+
+      val bines: InputStream = assetManager.open("bines.xml")
+    val documentBuilderFactoryBines = DocumentBuilderFactory.newInstance()
+    val documentBuilderBines = documentBuilderFactoryBines.newDocumentBuilder()
+    val documentBines = documentBuilderBines.parse(bines)
+    documentBines.documentElement.normalize()
+
+
+      Log.d("FlutterNewposSdkPlugin", "assetManagerBines")
+
+
     // El delegate del POS. Esta es la implementación del comportamiento que va a tomar el POS
     // al conectarse a la app
     try {
-        val delegate = FlutterPosDelegate(channel, document)
+        val delegate = FlutterPosDelegate(channel, document, documentAids, documentBines)
         Log.d("FlutterNewposSdkPlugin", "delegate")
         posManager = NpPosManager.sharedInstance(_pluginBinding!!.applicationContext, delegate)
         Log.d("FlutterNewposSdkPlugin", "posManager")

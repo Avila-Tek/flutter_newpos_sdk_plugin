@@ -2,7 +2,7 @@ part of flutter_newpos_sdk;
 
 class ReadCardInfo {
   const ReadCardInfo({
-    required this.cardType,
+    required this.readCardMethod,
     required this.cardNumber,
     this.track1,
     this.track2,
@@ -24,7 +24,7 @@ class ReadCardInfo {
         encryptPin: json['encryptPin'] as String?,
         cardholderName: json['cardholderName'] as String?,
         encryptedSN: json['encryptedSN'] as String?,
-        cardType: json['cardType'] as int,
+        readCardMethod: json['readCardMethod'] as int,
         tusn: json['tusn'] as String?,
         cardNumber: json['cardNumber'] as String? ?? '',
         expDate: json['expDate'] as String?,
@@ -38,7 +38,7 @@ class ReadCardInfo {
   final String? encryptPin;
   final String? cardholderName;
   final String? encryptedSN;
-  final int cardType;
+  final int readCardMethod;
   final String? tusn;
   final String cardNumber;
   final String? expDate;
@@ -64,7 +64,7 @@ class ReadCardInfo {
         'encryptPin': encryptPin,
         'cardholderName': cardholderName,
         'encryptedSN': encryptedSN,
-        'cardType': cardType,
+        'cardType': readCardMethod,
         'tusn': tusn,
         'cardNumber': cardNumber,
         'expDate': expDate,
