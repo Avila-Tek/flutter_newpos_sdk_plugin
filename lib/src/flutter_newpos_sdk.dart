@@ -690,6 +690,21 @@ class FlutterNewposSdk {
     }
   }
 
+  // static Future<String?> getInputData({required String title}) async {
+  //   final inputStream = FlutterNewposSdk._methodStream.stream
+  //       .where((m) => m.method == 'OnGetReadInputInfo')
+  //       .map((m) => m.arguments as String? ?? '');
+
+  //   await _invokeMethod('getInputInfo', title);
+
+  //   final input = await getFirstResultInStream(
+  //     inputStream,
+  //     const Duration(seconds: 10),
+  //   );
+
+  //   return input;
+  // }
+
   /// Completes a transaction for the specified amount and returns the result.
 
   ///
@@ -759,6 +774,7 @@ class FlutterNewposSdk {
             convertedMap[key] = value;
           }
         });
+        log('From map $convertedMap', name: 'completeTransaction');
         return ReadCardInfo.fromJson(convertedMap);
       });
 

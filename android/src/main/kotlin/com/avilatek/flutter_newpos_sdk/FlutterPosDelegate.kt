@@ -2,14 +2,11 @@ package com.avilatek.flutter_newpos_sdk
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
-import android.content.res.AssetManager
 import android.os.Handler
 import android.os.Looper
-import com.newpos.mposlib.sdk.NpPosManager
 import com.newpos.mposlib.sdk.CardInfoEntity
 import com.newpos.mposlib.sdk.DeviceInfoEntity
 import com.newpos.mposlib.sdk.INpSwipeListener
-import com.newpos.mposlib.sdk.InputInfoEntity
 import io.flutter.Log
 import io.flutter.plugin.common.MethodChannel
 import org.w3c.dom.Document
@@ -17,20 +14,18 @@ import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.xml.sax.SAXException
 import java.io.IOException
-import java.io.InputStream
-import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
 /// newPOS SDK Delegate. Declares the behavior and functionality to be executed when instantiating
 /// the [NpPosManager] class.
-class FlutterPosDelegate(private val channel: MethodChannel, private val document: Document) : INpSwipeListener {
+class FlutterPosDelegate(private val channel: MethodChannel, private val documentNeedPin: Document, private val documentAids: Document, private val documentBines: Document) : INpSwipeListener {
 
 
     fun needsPin(code: String): Boolean {
         try {
-            document.documentElement.normalize()
+            documentNeedPin.documentElement.normalize()
     
-            val rowNodes = document.getElementsByTagName("ROW")
+            val rowNodes = documentNeedPin.getElementsByTagName("ROW")
     
             for (index in 0 until rowNodes.length) {
                 val rowNode = rowNodes.item(index)
@@ -45,6 +40,69 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val documen
             }
     
             return false
+        } catch (e: ParserConfigurationException) {
+            throw e
+        } catch (e: IOException) {
+            throw e
+        } catch (e: SAXException) {
+            throw e
+        }
+    }
+
+    fun getCardType(tag4F: String, card: String): String? {
+        var cardType : String = ""
+        try {
+            /// Validate with 'AIDS.xml'
+            documentAids.documentElement.normalize()
+            val rowNodes = documentNeedPin.getElementsByTagName("ROW")
+            for (index in 0 until rowNodes.length) {
+                val rowNode = rowNodes.item(index)
+    
+                if (rowNode.nodeType == Node.ELEMENT_NODE) {
+                    val rowElement = rowNode as Element
+    
+                    if (tag4F == rowElement.getElementsByTagName("AID").item(0)?.textContent ?: "") {
+                        cardType = rowElement.getElementsByTagName("card_type").item(0).textContent;
+                    }
+                }
+            }
+            /// How many card types
+            /// if contains more than one card type should validate with bines.xml
+            val cardTypes = cardType.split("/");
+            val binCard = card.substring(0, 6).toBigInteger()
+            Log.d("BinCard", binCard.toString())
+
+            if (cardTypes.size > 1 || cardType.isEmpty()) {
+                documentBines.documentElement.normalize()
+                val rowNodesBines = documentBines.getElementsByTagName("ROW")
+                for (index in 0 until rowNodesBines.length) {
+                    val rowNode = rowNodesBines.item(index)
+        
+                    if (rowNode.nodeType == Node.ELEMENT_NODE) {
+                        val rowElement = rowNode as Element
+                        
+                        val rangoInicio = rowElement.getElementsByTagName("low").item(0).textContent.toBigInteger()
+                        val rangoFin = rowElement.getElementsByTagName("high").item(0).textContent.toBigInteger()
+                        Log.d("BinCard Inicio", rangoInicio.toString())
+                        Log.d("BinCard value", binCard.toString())
+                        Log.d("BinCard Fin", rangoFin.toString())
+
+                        if (binCard in rangoInicio..rangoFin) {
+                            cardType =  rowElement.getElementsByTagName("card_type").item(0).textContent
+                        }
+                
+                    }
+                }
+                // val bines = bin.split(",");
+                // val cardType = when {
+                //     bines.length > 1 -> "Credito"
+                //     else -> bin
+                // }
+                
+            }
+
+    
+            return cardType
         } catch (e: ParserConfigurationException) {
             throw e
         } catch (e: IOException) {
@@ -214,7 +272,7 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val documen
 
         val data = hashMapOf<String, Any?>()
         data["cardNumber"] = cardNumber
-        data["cardType"] = cardType
+        data["readCardMethod"] = cardType
         data["cardholderName"] = cardholderName
         data["csn"] = csn
         data["encryptPin"] = encryptPin
@@ -232,8 +290,20 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val documen
             val track2 = cardInfoEntity!!.track2
             val exp = cardInfoEntity!!.expDate
             val tag9F34 = cardInfoEntity!!.ic55Data.split("9F34").toTypedArray()[1]
+            var tag4F: String? = null
+            val array4F = cardInfoEntity.ic55Data.split("4F").toTypedArray()
+            if (array4F != null) {
+                if (array4F.size > 2) tag4F = array4F[2].substring(array4F[2].length - 2)
+                if (array4F.size > 1) tag4F = array4F[1].substring(array4F[1].length - 2)
+            }
+            Log.d("Tag4F",tag4F ?: "")
+
+
             val requiresPin: Boolean = needsPin(tag9F34.substring(2, 4))
             data["requiresPin"] = requiresPin
+            val cardTypeRead: String? = getCardType(tag4F ?: "", cardNumber ?: "");
+            data["cardType"] = cardTypeRead
+
             Log.d("Ger Read Card Info","Read Requires pin finished")
             channel.invokeMethod("OnGetReadCardInfo", data)
 

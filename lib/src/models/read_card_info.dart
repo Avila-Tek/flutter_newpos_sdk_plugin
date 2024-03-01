@@ -2,7 +2,7 @@ part of flutter_newpos_sdk;
 
 class ReadCardInfo {
   const ReadCardInfo({
-    required this.cardType,
+    required this.readCardMethod,
     required this.cardNumber,
     this.track1,
     this.track2,
@@ -14,6 +14,7 @@ class ReadCardInfo {
     this.expDate,
     this.track3,
     this.csn,
+    this.cardType,
     required this.requiresPin,
   });
 
@@ -24,12 +25,13 @@ class ReadCardInfo {
         encryptPin: json['encryptPin'] as String?,
         cardholderName: json['cardholderName'] as String?,
         encryptedSN: json['encryptedSN'] as String?,
-        cardType: json['cardType'] as int,
+        readCardMethod: json['readCardMethod'] as int,
         tusn: json['tusn'] as String?,
         cardNumber: json['cardNumber'] as String? ?? '',
         expDate: json['expDate'] as String?,
         track3: json['track3'] as String?,
         csn: json['csn'] as String?,
+        cardType: CardType.fromValue(json['cardType'] as String? ?? ''),
         requiresPin: json['requiresPin'] as bool? ?? false,
       );
   final String? track1;
@@ -38,13 +40,14 @@ class ReadCardInfo {
   final String? encryptPin;
   final String? cardholderName;
   final String? encryptedSN;
-  final int cardType;
+  final int readCardMethod;
   final String? tusn;
   final String cardNumber;
   final String? expDate;
   final String? track3;
   final String? csn;
   final bool requiresPin;
+  final CardType? cardType;
 
   String get tag9F34 {
     final ic55String = ic55Data ?? '';
@@ -64,7 +67,7 @@ class ReadCardInfo {
         'encryptPin': encryptPin,
         'cardholderName': cardholderName,
         'encryptedSN': encryptedSN,
-        'cardType': cardType,
+        'cardType': readCardMethod,
         'tusn': tusn,
         'cardNumber': cardNumber,
         'expDate': expDate,
