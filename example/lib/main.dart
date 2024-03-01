@@ -93,6 +93,12 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                           height: 20,
                         ),
                       if (readCardInfo != null) const Divider(),
+                      if (readCardInfo != null)
+                        Text('CardType ${readCardInfo!.cardType.toString()}'),
+                      if (readCardInfo != null)
+                        if (readCardInfo != null)
+                          Text(
+                              'Read card method ${readCardInfo!.readCardMethod.toString()}'),
                       const SizedBox(
                         height: 20,
                       ),
@@ -248,6 +254,28 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                             // ),
                             // const SizedBox(
                             //   height: 20,
+                            // ),
+
+                            // ElevatedButton(
+                            //   onPressed: () {
+                            //     try {
+                            //       LoadingDialog.show(context);
+                            //       FlutterNewposSdk.getInputData(
+                            //         title:
+                            //             'Tipo de cuenta? Corriente = 0, Ahorro = 1',
+                            //       );
+                            //       LoadingDialog.hide(context);
+                            //     } catch (e) {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         const SnackBar(
+                            //           content: Text('Error leyendo tarjeta'),
+                            //         ),
+                            //       );
+                            //     }
+                            //   },
+                            //   child: const Center(
+                            //     child: Text('Ask credit or debit'),
+                            //   ),
                             // ),
                             ElevatedButton(
                               onPressed: () async {

@@ -14,6 +14,7 @@ class ReadCardInfo {
     this.expDate,
     this.track3,
     this.csn,
+    this.cardType,
     required this.requiresPin,
   });
 
@@ -30,6 +31,7 @@ class ReadCardInfo {
         expDate: json['expDate'] as String?,
         track3: json['track3'] as String?,
         csn: json['csn'] as String?,
+        cardType: CardType.fromValue(json['cardType'] as String? ?? ''),
         requiresPin: json['requiresPin'] as bool? ?? false,
       );
   final String? track1;
@@ -45,6 +47,7 @@ class ReadCardInfo {
   final String? track3;
   final String? csn;
   final bool requiresPin;
+  final CardType? cardType;
 
   String get tag9F34 {
     final ic55String = ic55Data ?? '';
