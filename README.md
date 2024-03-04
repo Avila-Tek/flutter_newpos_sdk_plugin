@@ -44,7 +44,7 @@ https://developer.android.com/about/versions/12/features/bluetooth-permissions -
 > Note: You may set `ref` to `stable` if you want to use the latest stable version available, but it may break your code if a breaking change is made.
 >
 
-Lastly, you will need to add the mPOS SDK's AAR library to your project's `android` folder. Then, declare the dependency in the app-level gradle.
+Lastly, you will need to add the mPOS SDK's **AAR** library to your project's `android` folder. Then, declare the dependency in the app-level gradle.
 
 ```gradle
 // ...
