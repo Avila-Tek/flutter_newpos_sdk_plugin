@@ -255,6 +255,7 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val documen
         Log.d("onGetReadCardInfo","TRACK 2 -> ${cardInfoEntity?.track2}")
         Log.d("onGetReadCardInfo","TRACK 3 -> ${cardInfoEntity?.track3}")
         Log.d("onGetReadCardInfo","TUSN -> ${cardInfoEntity?.tusn}")
+        Log.d("onGetReadCardInfo","TUSN -> ${cardInfoEntity?.getKsn()}")
         Log.d("onGetReadCardInfo","---------------------")
 
         var cardNumber = cardInfoEntity?.cardNumber;
@@ -269,6 +270,7 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val documen
         var track2 = cardInfoEntity?.track2;
         var track3 = cardInfoEntity?.track3;
         var tusn = cardInfoEntity?.tusn;
+        var ksn = cardInfoEntity?.getKsn();
 
         val data = hashMapOf<String, Any?>()
         data["cardNumber"] = cardNumber
@@ -283,6 +285,7 @@ class FlutterPosDelegate(private val channel: MethodChannel, private val documen
         data["track2"] = track2
         data["track3"] = track3
         data["tusn"] = tusn
+        data["ksn"] = ksn
         Handler(Looper.getMainLooper()).post {
             Log.d("Ger Read Card Info","Read Requires pin")
             

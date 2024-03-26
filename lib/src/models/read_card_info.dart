@@ -2,6 +2,7 @@ part of flutter_newpos_sdk;
 
 class ReadCardInfo {
   const ReadCardInfo({
+    required this.ksn,
     required this.readCardMethod,
     required this.cardNumber,
     this.track1,
@@ -20,6 +21,7 @@ class ReadCardInfo {
 
   factory ReadCardInfo.fromJson(Map<String, dynamic> json) => ReadCardInfo(
         track1: json['track1'] as String?,
+        ksn: json['ksn'] as String? ?? '',
         track2: json['track2'] as String?,
         ic55Data: json['ic55Data'] as String?,
         encryptPin: json['encryptPin'] as String?,
@@ -34,6 +36,7 @@ class ReadCardInfo {
         cardType: CardType.fromValue(json['cardType'] as String? ?? ''),
         requiresPin: json['requiresPin'] as bool? ?? false,
       );
+  final String ksn;
   final String? track1;
   final String? track2;
   final String? ic55Data;
