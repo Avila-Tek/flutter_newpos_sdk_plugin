@@ -1,11 +1,10 @@
 name: flutter_newpos_sdk
 description: A new Flutter plugin project.
-version: 0.0.2-alpha
-
+version: 0.2.0-stable
 
 environment:
-  sdk: '>=3.1.2 <4.0.0'
-  flutter: '>=3.3.0'
+  sdk: ">=3.1.2 <4.0.0"
+  flutter: ">=3.3.0"
 
 dependencies:
   dartdoc: ^6.3.0
