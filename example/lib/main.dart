@@ -96,6 +96,8 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                       if (readCardInfo != null)
                         Text('CardType ${readCardInfo!.cardType.toString()}'),
                       if (readCardInfo != null)
+                        Text('KSN ${readCardInfo!.ksn}'),
+                      if (readCardInfo != null)
                         if (readCardInfo != null)
                           Text(
                               'Read card method ${readCardInfo!.readCardMethod.toString()}'),
